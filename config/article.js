@@ -11,20 +11,19 @@ export default () => ({ // eslint-disable-line
   //       new Date('2016-05-17T17:11:22Z')
   publishedDate: new Date(),
 
-  headline: 'Politics and the English Language',
+  headline: 'Donald Trump’s inauguration speech — annotated',
 
   // summary === standfirst (Summary is what the content API calls it)
-  summary: 'Political language is designed to make lies sound truthful' +
-           'and murder respectable, and to give an appearance of solidity to pure wind',
+  summary: 'The full text with FT reporters’ notes and comments',
 
   topic: {
-    name: 'Starter Kit',
-    url: '/foo',
+    name: 'Donald Trump',
+    url: 'https://www.ft.com/donald-trump',
   },
 
   relatedArticle: {
-    text: 'Related article »',
-    url: 'https://en.wikipedia.org/wiki/Politics_and_the_English_Language',
+    text: '',
+    url: '',
   },
 
   mainImage: {
@@ -38,15 +37,16 @@ export default () => ({ // eslint-disable-line
   // Byline can by a plain string, markdown, or array of authors
   // if array of authors, url is optional
   byline: [
-    { name: 'Author One', url: '/foo/bar' },
-    { name: 'Author Two' },
+    { name: 'Ændrew Rininsland', url: 'https://www.ft.com/topics/authors/%C3%86ndrew_Rininsland' },
+    { name: 'Caroline Nevitt', url: 'https://www.ft.com/topics/authors/Caroline_Nevitt' },
+    { name: 'Martin Stabe', url: 'https://www.ft.com/martin-stabe' },
   ],
 
   // Appears in the HTML <title>
-  title: '',
+  title: 'Donald Trump inauguration speech, annotated by the Financial Times',
 
   // meta data
-  description: '',
+  description: 'Donald Trump inauguration speech, annotated by the FT',
 
   /*
   TODO: Select Twitter card type -
