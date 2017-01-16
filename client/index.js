@@ -73,7 +73,7 @@ class Annotation {
 
 	appendAnnotation(clickedElement) {
 		const annotationIndex = clickedElement.getAttribute(this.highlightAttribute)
-		const annotationModal = document.createElement('div');
+		const annotationModal = document.createElement('aside');
 		annotationModal.setAttribute('data-annotation-modal', annotationIndex);
 		annotationModal.classList.add('annotation-modal');
 		annotationModal.innerHTML = this.annotations[annotationIndex].annotation.md;
