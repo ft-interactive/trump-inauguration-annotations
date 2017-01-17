@@ -1,33 +1,43 @@
-/*
-  TODO: delete this comment
-
-  This file is where you bootstrap your JS code
-  For example import stuff here:
-
-  import {select} from 'd3-selection';
-  import myComponent from './components/my-component';
-
-  Split logical parts of you project into components e.g.
-
-  /client
-    - /components
-        - /component-name
-            - styles.scss
-            - index.js
-            - template.html
-
-*/
 import axios from 'axios';
 import MarkdownIt from 'markdown-it';
 
 class Annotation {
 	constructor() {
-		this.speechContainer = document.querySelector('[data-speech-body]');
+		this.speechContainer = document.querySelector('[data-speech]');
 		this.highlightAttribute = 'data-highlight';
 		this.highlightElements;
 		this.annotations;
 		this.selectedAnnotation;
-		this.getAnnotations();
+
+    this.getAnnotations();
+		this.appendAnnotation();
+	}
+
+  bindListeners() {
+		const eventHandler = (event) => {
+				if (event.type === 'click' || (event.type === 'click' && event.keyCode === 13)) {
+          this.openAnnotation(event.target);
+          if (this.selectedHighlight) {
+            this.selectedHighlight.setAttribute('aria-expanded', 'false');
+          }
+          this.selectedHighlight = event.target;
+          this.selectedHighlight.setAttribute('aria-expanded', 'true');
+        }
+    };
+
+    [].forEach.call(this.highlightElements, (element) => {
+      element.addEventListener('click', eventHandler);
+      element.addEventListener('keyup', (event) => {
+        if (event.keyCode === 13) {
+				  this.openAnnotation(event.target);
+          if (this.selectedHighlight) {
+            this.selectedHighlight.setAttribute('aria-expanded', 'false');
+          }
+          this.selectedHighlight = event.target;
+          this.selectedHighlight.setAttribute('aria-expanded', 'true');
+        }
+      });
+		});
 	}
 
 	getAnnotations() {
@@ -41,7 +51,28 @@ class Annotation {
   		});
 	}
 
-	elementContainingAnnotationMatcher(matcher) {
+  addHighlighting() {
+  	this.annotations.forEach((annotation, index) => {
+			if(this.elementContainingAnnotationMatcher(annotation.match)) {
+				this.highlightMarkup(this.elementContainingAnnotationMatcher(annotation.match), annotation.match, index);
+			}
+  	});
+		this.highlightElements = this.speechContainer.querySelectorAll(`[${this.highlightAttribute}]`);
+	}
+
+  highlightMarkup(node, matcher, annotationIndex) {
+		const highlight = document.createElement('mark');
+    highlight.innerHTML = matcher;
+		highlight.tabIndex = 1;
+    highlight.classList.add('speech--highlight');
+    highlight.setAttribute(this.highlightAttribute, annotationIndex);
+    highlight.setAttribute('aria-expanded', 'false');
+    highlight.setAttribute('aria-controls', 'annotation');
+
+    node.innerHTML = node.innerHTML.replace(matcher, highlight.outerHTML);
+	}
+
+  elementContainingAnnotationMatcher(matcher) {
 		for (var i = 0; i < this.speechContainer.childNodes.length; i++) {
 			if (this.speechContainer.childNodes[i].textContent.includes(matcher)) {
     		return this.speechContainer.childNodes[i];
@@ -50,34 +81,23 @@ class Annotation {
 		};
 	}
 
-	addHighlightMarkup(node, matcher, annotationIndex) {
-		node.innerHTML = node.innerHTML.replace(matcher, `<mark class="annotation-highlight" ${this.highlightAttribute}="${annotationIndex}">${matcher}</mark>`)
-    node.setAttribute('aria-expanded', 'false');
+  appendAnnotation() {
+		this.annotationModal = document.createElement('aside');
+		this.annotationModal.id = 'annotation';
+    this.annotationModal.setAttribute('aria-hidden', true);
+    this.annotationModal.setAttribute('aria-live', 'polite');
+		this.annotationModal.classList.add('speech--annotation');
+    this.speechContainer.appendChild(this.annotationModal);
 	}
 
-	addHighlighting() {
-  	this.annotations.forEach((annotation, index) => {
-			if(this.elementContainingAnnotationMatcher(annotation.match)) {
-				this.addHighlightMarkup(this.elementContainingAnnotationMatcher(annotation.match), annotation.match, index);
-			}
-  	});
-		this.highlightElements = this.speechContainer.querySelectorAll(`[${this.highlightAttribute}]`);
-	}
+  openAnnotation(clickedElement) {
+    const annotationIndex = clickedElement.getAttribute(this.highlightAttribute);
+    this.annotationModal.innerHTML = this.generateAnnotationMarkup(this.annotations[annotationIndex]);
+    this.annotationModal.setAttribute('style', `top: ${this.calculateAnnotationPosition(clickedElement, this.annotationModal)}px; visibility: visible`)
+    this.annotationModal.setAttribute('aria-hidden', false);
 
-	bindListeners() {
-		[].forEach.call(this.highlightElements, (element) => {
-			element.addEventListener('click', (event) => {
-				this.removeAnnotation();
-				this.appendAnnotation(event.target);
-        if (this.selectedHighlight) {
-          this.selectedHighlight.setAttribute('aria-expanded', 'false');
-        }
-        this.selectedHighlight = event.target;
-        console.log(this.selectedHighlight)
-        this.selectedHighlight.setAttribute('aria-expanded', 'true');
-			});
-		});
-	}
+    clickedElement.parentNode.insertBefore(this.annotationModal, clickedElement.nextSibling)
+  }
 
   generateAnnotationMarkup(data) {
     const md = new MarkdownIt();
@@ -91,25 +111,6 @@ class Annotation {
 
     return topOfHighlight + heightOfAnnotation < bottomOfSpeech ? topOfHighlight : topOfHighlight - ((topOfHighlight + heightOfAnnotation) - bottomOfSpeech);
   }
-
-	appendAnnotation(clickedElement) {
-		const annotationIndex = clickedElement.getAttribute(this.highlightAttribute)
-		const annotationModal = document.createElement('aside');
-		annotationModal.setAttribute('data-annotation-modal', annotationIndex);
-		annotationModal.classList.add('annotation-modal');
-    annotationModal.innerHTML = this.generateAnnotationMarkup(this.annotations[annotationIndex]);
-
-		clickedElement.parentNode.insertBefore(annotationModal, clickedElement.nextSibling)
-    annotationModal.setAttribute('style', `top: ${this.calculateAnnotationPosition(clickedElement, annotationModal)}px; visibility: visible`)
-    annotationModal.setAttribute('aria-hidden', false);
-		this.selectedAnnotation = annotationModal;
-	}
-
-	removeAnnotation() {
-		if (this.selectedAnnotation) {
-			this.selectedAnnotation.parentNode.removeChild(this.selectedAnnotation);
-		}
-	}
 }
 
 new Annotation();

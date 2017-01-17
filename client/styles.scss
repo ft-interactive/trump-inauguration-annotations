@@ -1,37 +1,50 @@
+@import 'o-icons/main';
 @import 'o-colors/main';
 @import 'o-grid/main';
 @import 'components/core/main';
 
-/*
-      TODO: delete this comment
+.speech {
+    background: oColorsGetPaletteColor(warm-5);
+    box-shadow: 1px 1px 1px 1px rgba(204,204,204,0.5);
+    padding: 20px 40px;
+    margin-bottom: 20px;
+}
 
-      Write your code here - keep it neat!
-      Split logical parts of you project into components e.g.
+.speech:before {
+    content: '';
+    @include oIconsGetIcon('speech-left', oColorsGetPaletteColor('grey-tint3'), 48);
+    display: block;
+    margin: 0 auto;
+}
 
-      /client
-        - /components
-            - /component-name
-                - styles.scss
-                - index.js
-                - template.html
-*/
-
-.annotation-modal {
+.speech:after {
+    content: '';
+    @include oIconsGetIcon('speech-right', oColorsGetPaletteColor('grey-tint3'), 48);
+    display: block;
+    margin: 0 auto;
+}
+.speech--annotation {
     visibility: hidden;
-    border-left: 2px solid rgba(oColorsGetPaletteColor(teal-2), 0.6);
+    border-left: 3px solid rgba(oColorsGetPaletteColor(teal-2), 0.6);
     padding-left: 10px;
     margin: 10px 0;
 
     @include oGridRespondTo(L) {
         position: absolute;
-        width: 300px;
-        right: -330px;
+        width: 210px;
+        right: -235px;
+        margin: 0;
+    }
+
+    @include oGridRespondTo(XL) {
+        position: absolute;
+        width: 360px;
+        right: -390px;
         margin: 0;
     }
 }
 
-
-.annotation-highlight {
+.speech--highlight {
     background-color: rgba(oColorsGetPaletteColor(teal-2), 0.3);
     transition: background-color 0.3s ease;
     &:hover,
@@ -41,8 +54,3 @@
     }
 }
 
-.speech-container {
-    background: oColorsGetPaletteColor(warm-5);
-    box-shadow: 1px 1px 1px 1px rgba(204,204,204,0.5);
-    padding: 20px 40px;
-}
