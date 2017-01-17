@@ -18,6 +18,7 @@
 
 */
 import axios from 'axios';
+import MarkdownIt from 'markdown-it';
 
 class Annotation {
 	constructor() {
@@ -51,6 +52,7 @@ class Annotation {
 
 	addHighlightMarkup(node, matcher, annotationIndex) {
 		node.innerHTML = node.innerHTML.replace(matcher, `<mark class="annotation-highlight" ${this.highlightAttribute}="${annotationIndex}">${matcher}</mark>`)
+    node.setAttribute('aria-expanded', 'false');
 	}
 
 	addHighlighting() {
@@ -67,18 +69,39 @@ class Annotation {
 			element.addEventListener('click', (event) => {
 				this.removeAnnotation();
 				this.appendAnnotation(event.target);
+        if (this.selectedHighlight) {
+          this.selectedHighlight.setAttribute('aria-expanded', 'false');
+        }
+        this.selectedHighlight = event.target;
+        console.log(this.selectedHighlight)
+        this.selectedHighlight.setAttribute('aria-expanded', 'true');
 			});
 		});
 	}
+
+  generateAnnotationMarkup(data) {
+    const md = new MarkdownIt();
+    return `<h3><span class="o-typography-subhead--standard">${data.author}</span></h3> ${md.render(data.annotation.md)}`;
+  }
+
+  calculateAnnotationPosition(highlight, annotation) {
+    const topOfHighlight = highlight.offsetTop;
+    const heightOfAnnotation = annotation.clientHeight;
+    const bottomOfSpeech = this.speechContainer.clientHeight + this.speechContainer.offsetTop;
+
+    return topOfHighlight + heightOfAnnotation < bottomOfSpeech ? topOfHighlight : topOfHighlight - ((topOfHighlight + heightOfAnnotation) - bottomOfSpeech);
+  }
 
 	appendAnnotation(clickedElement) {
 		const annotationIndex = clickedElement.getAttribute(this.highlightAttribute)
 		const annotationModal = document.createElement('aside');
 		annotationModal.setAttribute('data-annotation-modal', annotationIndex);
 		annotationModal.classList.add('annotation-modal');
-		annotationModal.innerHTML = this.annotations[annotationIndex].annotation.md;
+    annotationModal.innerHTML = this.generateAnnotationMarkup(this.annotations[annotationIndex]);
 
 		clickedElement.parentNode.insertBefore(annotationModal, clickedElement.nextSibling)
+    annotationModal.setAttribute('style', `top: ${this.calculateAnnotationPosition(clickedElement, annotationModal)}px; visibility: visible`)
+    annotationModal.setAttribute('aria-hidden', false);
 		this.selectedAnnotation = annotationModal;
 	}
 
