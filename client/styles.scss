@@ -28,20 +28,6 @@
     border-left: 3px solid rgba(oColorsGetPaletteColor(teal-2), 0.6);
     padding-left: 10px;
     margin: 10px 0;
-
-    @include oGridRespondTo(L) {
-        position: absolute;
-        width: 210px;
-        right: -235px;
-        margin: 0;
-    }
-
-    @include oGridRespondTo(XL) {
-        position: absolute;
-        width: 360px;
-        right: -390px;
-        margin: 0;
-    }
 }
 
 .speech--highlight {
