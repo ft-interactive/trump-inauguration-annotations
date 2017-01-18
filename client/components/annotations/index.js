@@ -60,6 +60,25 @@ class Annotation {
         }
       });
 		});
+
+    let inView = [];
+    window.addEventListener('scroll', (e) => {
+      [].forEach.call(this.highlightElements, (element) => {
+        if (element.getBoundingClientRect().top < (document.documentElement.clientHeight / 2)) {
+          if (element.getBoundingClientRect().top > 0) {
+            inView.push(element);
+          } else {
+            inView.splice(inView.indexOf(element), 1);
+          }
+
+          if(inView.length) {
+            this.openAnnotation(inView[inView.length - 1]);
+          }
+        }
+      });
+
+     // console.log('scroll')
+    });
 	}
 
 	getAnnotations() {
