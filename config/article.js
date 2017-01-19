@@ -11,10 +11,10 @@ export default () => ({ // eslint-disable-line
   //       new Date('2016-05-17T17:11:22Z')
   publishedDate: new Date(),
 
-  headline: 'Donald Trump’s inauguration speech — annotated',
+  headline: 'Donald Trump’s inauguration day speech — annotated',
 
   // summary === standfirst (Summary is what the content API calls it)
-  summary: 'The full text with FT reporters’ notes and comments',
+  summary: 'The full transcript with FT correspondents’ notes and comments',
 
   topic: {
     name: 'Donald Trump',
