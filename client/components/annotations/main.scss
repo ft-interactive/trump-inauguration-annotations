@@ -1,11 +1,19 @@
 @import 'o-icons/main';
 @import 'o-colors/main';
+@import 'o-typography/main';
+
+$o-typography-progressive-fonts: SansData;
+$highlight: rgb(80,212,196);
 
 .speech {
     background: oColorsGetPaletteColor(warm-5);
     box-shadow: 1px 1px 1px 1px rgba(oColorsGetPaletteColor('grey-tint1'), 0.5);
     padding: 20px 40px;
     margin-bottom: 20px;
+
+    p {
+        line-height: 1.8;
+    }
 }
 
 .speech:before {
@@ -21,19 +29,27 @@
     display: block;
     margin: 0 auto;
 }
+
 .speech--annotation {
     visibility: hidden;
-    border-left: 3px solid rgba(oColorsGetPaletteColor('teal-2'), 0.6);
+    border-left: 3px solid $highlight;
     padding-left: 10px;
     margin: 10px 0;
+
+    p {
+        @include oTypographySansData(l, $load-progressively: true);
+        font-size: 18px;
+    }
 }
 
 .speech--highlight {
-    background-color: rgba(oColorsGetPaletteColor('teal-2'), 0.3);
+    background-color: rgba(oColorsGetPaletteColor('grey-tint5'), 0.15);
     transition: background-color 0.3s ease;
-    &:hover,
     &[aria-expanded="true"] {
-        background-color: rgba(oColorsGetPaletteColor('teal-2'), 0.6);
+        background-color: $highlight;
+    }
+    &:hover:not([aria-expanded="true"]) {
+        background-color: rgba($highlight,0.5);
         cursor: pointer;
     }
 }
