@@ -65,6 +65,8 @@ class Annotation {
       });
 		});
 
+
+    /*
     let inView = [];
     window.addEventListener('scroll', (e) => {
       [].forEach.call(this.highlightElements, (element) => {
@@ -80,9 +82,8 @@ class Annotation {
           }
         }
       });
-
-     // console.log('scroll')
     });
+   */
 	}
 
 	getAnnotations() {
