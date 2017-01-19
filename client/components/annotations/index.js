@@ -2,17 +2,17 @@ import axios from 'axios';
 import MarkdownIt from 'markdown-it';
 
 class Annotation {
-	constructor(rootElement, options) {
+  constructor(rootElement, options) {
     this.rootElement = rootElement;
-		this.options = this.defaultOptions(options);
-		this.highlightAttribute = 'data-highlight';
-		this.highlightElements;
-		this.annotations;
+    this.options = this.defaultOptions(options);
+    this.highlightAttribute = 'data-highlight';
+    this.highlightElements;
+    this.annotations;
     this.selectedHighlight;
 
     this.getAnnotations();
-		this.appendAnnotation();
-	}
+    this.appendAnnotation();
+  }
 
   static init(rootElement, options = {}) {
     if (!rootElement) {
@@ -25,7 +25,7 @@ class Annotation {
       new Annotation(rootElement, options);
     } else {
       [].forEach.call(rootElement, (element) => {
-        new Annotation(element, options)
+        new Annotation(element, options);
       });
     }
   }
@@ -35,42 +35,42 @@ class Annotation {
       annotationsId: options.annotationsId || this.rootElement.getAttribute('data-annotation-id'),
       minWidth: options.minWidth || null,
       maxWidth: options.maxWidth || null,
-      gutter: options.gutter || null
-    }
+      gutter: options.gutter || null,
+    };
   }
 
   bindListeners() {
-		const eventHandler = (event) => {
-				if (event.type === 'click' || (event.type === 'click' && event.keyCode === 13)) {
-          if (this.selectedHighlight && this.selectedHighlight === event.target) {
-            this.annotationModal.innerHTML = '';
+    const eventHandler = (event) => {
+      if (event.type === 'click' || (event.type === 'click' && event.keyCode === 13)) {
+        if (this.selectedHighlight && this.selectedHighlight === event.target) {
+          this.annotationModal.innerHTML = '';
+          this.selectedHighlight.setAttribute('aria-expanded', 'false');
+          this.selectedHighlight = null;
+          if (typeof (ga) !== 'undefined') {
+            ga('send', {
+              hitType: 'event',
+              eventCategory: 'Annotation Highlight',
+              eventAction: 'Close',
+              eventLabel: 'Trump Speech',
+            });
+          }
+        } else {
+          this.openAnnotation(event.target);
+          if (this.selectedHighlight) {
             this.selectedHighlight.setAttribute('aria-expanded', 'false');
-            this.selectedHighlight = null;
-            if (typeof(ga) !== 'undefined') {
-              ga('send', {
-                hitType: 'event',
-                eventCategory: 'Annotation Highlight',
-                eventAction: 'Close',
-                eventLabel: 'Trump Speech'
-              });
-            }
-          } else {
-            this.openAnnotation(event.target);
-            if (this.selectedHighlight) {
-              this.selectedHighlight.setAttribute('aria-expanded', 'false');
-            }
-            this.selectedHighlight = event.target;
-            this.selectedHighlight.setAttribute('aria-expanded', 'true');
-            if (typeof(ga) !== 'undefined') {
-              ga('send', {
-                hitType: 'event',
-                eventCategory: 'Annotation Highlight',
-                eventAction: 'Open',
-                eventLabel: 'Trump Speech'
-              });
-            }
+          }
+          this.selectedHighlight = event.target;
+          this.selectedHighlight.setAttribute('aria-expanded', 'true');
+          if (typeof (ga) !== 'undefined') {
+            ga('send', {
+              hitType: 'event',
+              eventCategory: 'Annotation Highlight',
+              eventAction: 'Open',
+              eventLabel: 'Trump Speech',
+            });
           }
         }
+      }
     };
 
     [].forEach.call(this.highlightElements, (element) => {
@@ -85,7 +85,7 @@ class Annotation {
           this.selectedHighlight.setAttribute('aria-expanded', 'true');
         }
       });
-		});
+    });
 
     window.onresize = (event) => {
       const width = this.calculateAnnotationWidth();
@@ -100,32 +100,32 @@ class Annotation {
         this.annotationModal.style.width = '100%';
       }
     };
-	}
+  }
 
-	getAnnotations() {
-		axios.get(`http://bertha.ig.ft.com/view/publish/gss/${this.options.annotationsId}/authors,annotations`)
+  getAnnotations() {
+    axios.get(`http://bertha.ig.ft.com/view/publish/gss/${this.options.annotationsId}/authors,annotations`)
   		.then(data => {
-				this.annotations = data.data.annotations;
-				this.addHighlighting();
-				this.bindListeners();
+    this.annotations = data.data.annotations;
+    this.addHighlighting();
+    this.bindListeners();
   		}).catch(error => {
     		console.error(error);
   		});
-	}
+  }
 
   addHighlighting() {
   	this.annotations.forEach((annotation, index) => {
-			if(this.elementContainingAnnotationMatcher(annotation.match)) {
-				this.highlightMarkup(this.elementContainingAnnotationMatcher(annotation.match), annotation.match, index);
-			}
+    if (this.elementContainingAnnotationMatcher(annotation.match)) {
+      this.highlightMarkup(this.elementContainingAnnotationMatcher(annotation.match), annotation.match, index);
+    }
   	});
-		this.highlightElements = this.rootElement.querySelectorAll(`[${this.highlightAttribute}]`);
-	}
+    this.highlightElements = this.rootElement.querySelectorAll(`[${this.highlightAttribute}]`);
+  }
 
   highlightMarkup(node, matcher, annotationIndex) {
-		const highlight = document.createElement('mark');
+    const highlight = document.createElement('mark');
     highlight.innerHTML = matcher;
-		highlight.tabIndex = 0;
+    highlight.tabIndex = 0;
     highlight.classList.add('speech__highlight');
     highlight.setAttribute(this.highlightAttribute, annotationIndex);
     highlight.setAttribute('aria-expanded', 'false');
@@ -133,24 +133,24 @@ class Annotation {
     highlight.setAttribute('role', 'button');
 
     node.innerHTML = node.innerHTML.replace(matcher, highlight.outerHTML);
-	}
+  }
 
   elementContainingAnnotationMatcher(matcher) {
-		for (var i = 0; i < this.rootElement.childNodes.length; i++) {
-			if (this.rootElement.childNodes[i].textContent.includes(matcher)) {
+    for (let i = 0; i < this.rootElement.childNodes.length; i++) {
+      if (this.rootElement.childNodes[i].textContent.includes(matcher)) {
     		return this.rootElement.childNodes[i];
-				break;
+        break;
   		}
-		};
-	}
+    }
+  }
 
   appendAnnotation() {
     const annotationWidth = this.calculateAnnotationWidth();
-		this.annotationModal = document.createElement('aside');
-		this.annotationModal.id = 'annotation';
+    this.annotationModal = document.createElement('aside');
+    this.annotationModal.id = 'annotation';
     this.annotationModal.setAttribute('aria-hidden', true);
     this.annotationModal.setAttribute('aria-live', 'polite');
-		this.annotationModal.classList.add('speech__annotation');
+    this.annotationModal.classList.add('speech__annotation');
 
     if (annotationWidth) {
       this.annotationModal.classList.add('speech__annotation--absolute');
@@ -158,7 +158,7 @@ class Annotation {
     }
 
     this.rootElement.appendChild(this.annotationModal);
-	}
+  }
 
   openAnnotation(clickedElement) {
     const annotationIndex = clickedElement.getAttribute(this.highlightAttribute);
@@ -173,7 +173,7 @@ class Annotation {
 
     this.annotationModal.setAttribute('aria-hidden', false);
 
-    clickedElement.parentNode.insertBefore(this.annotationModal, clickedElement.nextSibling)
+    clickedElement.parentNode.insertBefore(this.annotationModal, clickedElement.nextSibling);
   }
 
   generateAnnotationMarkup(data) {
@@ -190,7 +190,6 @@ class Annotation {
     width = this.options.maxWidth && width > this.options.maxWidth ? this.options.maxWidth : width;
 
     return width;
-
   }
   calculateAnnotationYPosition(highlight, annotation) {
     const topOfHighlight = highlight.offsetTop;
@@ -200,7 +199,7 @@ class Annotation {
 
     return {
       top: topOfHighlight + heightOfAnnotation < bottomOfSpeech ? topOfHighlight : topOfHighlight - ((topOfHighlight + heightOfAnnotation) - bottomOfSpeech),
-      left: leftPosition
+      left: leftPosition,
     };
   }
 }

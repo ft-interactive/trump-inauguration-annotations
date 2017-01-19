@@ -6,7 +6,8 @@
 $o-typography-progressive-fonts: SansData;
 $highlight: rgb(80,212,196);
 
-.annotation-instructions {
+.o-typography-body-wrapper .annotation-instructions {
+    @include oTypographySansData(l, $load-progressively: true);
     text-align: center;
 }
 
@@ -21,23 +22,6 @@ $highlight: rgb(80,212,196);
     p {
         color: #505050;
         line-height: 1.8;
-    }
-}
-
-.speech:before {
-    @include oIconsGetIcon('speech-left', oColorsGetPaletteColor('grey-tint3'), 48);
-}
-
-.speech:after {
-    @include oIconsGetIcon('speech-right', oColorsGetPaletteColor('grey-tint3'), 48);
-}
-
-.speech:before,
-.speech:after {
-    content: '';
-    display: block;
-    @include oGridRespondTo(M) {
-        margin: 0 auto;
     }
 }
 
