@@ -8,7 +8,7 @@ class Annotation {
 		this.highlightAttribute = 'data-highlight';
 		this.highlightElements;
 		this.annotations;
-		this.selectedAnnotation;
+    this.selectedHighlight;
 
     this.getAnnotations();
 		this.appendAnnotation();
@@ -65,25 +65,19 @@ class Annotation {
       });
 		});
 
+    window.onresize = (event) => {
+      const width = this.calculateAnnotationWidth();
 
-    /*
-    let inView = [];
-    window.addEventListener('scroll', (e) => {
-      [].forEach.call(this.highlightElements, (element) => {
-        if (element.getBoundingClientRect().top < (document.documentElement.clientHeight / 2)) {
-          if (element.getBoundingClientRect().top > 0) {
-            inView.push(element);
-          } else {
-            inView.splice(inView.indexOf(element), 1);
-          }
-
-          if(inView.length) {
-            this.openAnnotation(inView[inView.length - 1]);
-          }
-        }
-      });
-    });
-   */
+      if (width) {
+        this.annotationModal.classList.add('speech__annotation--absolute');
+        this.annotationModal.style.width = `${this.calculateAnnotationWidth()}px`;
+        this.annotationModal.style.top = `${this.calculateAnnotationYPosition(this.selectedHighlight, this.annotationModal).top}px`;
+        this.annotationModal.style.left = `${this.calculateAnnotationYPosition(this.selectedHighlight, this.annotationModal).left}px`;
+      } else {
+        this.annotationModal.classList.remove('speech__annotation--absolute');
+        this.annotationModal.style.width = '100%';
+      }
+    };
 	}
 
 	getAnnotations() {
@@ -110,7 +104,7 @@ class Annotation {
 		const highlight = document.createElement('mark');
     highlight.innerHTML = matcher;
 		highlight.tabIndex = 1;
-    highlight.classList.add('speech--highlight');
+    highlight.classList.add('speech__highlight');
     highlight.setAttribute(this.highlightAttribute, annotationIndex);
     highlight.setAttribute('aria-expanded', 'false');
     highlight.setAttribute('aria-controls', 'annotation');
@@ -133,10 +127,11 @@ class Annotation {
 		this.annotationModal.id = 'annotation';
     this.annotationModal.setAttribute('aria-hidden', true);
     this.annotationModal.setAttribute('aria-live', 'polite');
-		this.annotationModal.classList.add('speech--annotation');
+		this.annotationModal.classList.add('speech__annotation');
 
     if (annotationWidth) {
-      this.annotationModal.setAttribute('style', `width: ${annotationWidth}px; position: absolute; margin: 0`);
+      this.annotationModal.classList.add('speech__annotation--absolute');
+      this.annotationModal.style.width = `${annotationWidth}px`;
     }
 
     this.rootElement.appendChild(this.annotationModal);
@@ -160,7 +155,7 @@ class Annotation {
 
   generateAnnotationMarkup(data) {
     const md = new MarkdownIt();
-    return `<h3><span class="o-typography-subhead--standard">${data.author}</span></h3> ${md.render(data.annotation.md)}`;
+    return `${md.render(data.annotation.md)}<a href="${data.authorlink}" rel="author" class="speech__annotation-byline">${data.author}</a>`;
   }
 
   calculateAnnotationWidth() {
@@ -175,14 +170,10 @@ class Annotation {
 
   }
   calculateAnnotationYPosition(highlight, annotation) {
-
-
     const topOfHighlight = highlight.offsetTop;
     const heightOfAnnotation = annotation.clientHeight;
     const bottomOfSpeech = this.rootElement.clientHeight + this.rootElement.offsetTop;
     const leftPosition = this.rootElement.clientWidth + this.options.gutter;
-
-
 
     return {
       top: topOfHighlight + heightOfAnnotation < bottomOfSpeech ? topOfHighlight : topOfHighlight - ((topOfHighlight + heightOfAnnotation) - bottomOfSpeech),
