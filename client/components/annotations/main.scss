@@ -6,6 +6,10 @@
 $o-typography-progressive-fonts: SansData;
 $highlight: rgb(80,212,196);
 
+.annotation-instructions {
+    text-align: center;
+}
+
 .speech {
     background: oColorsGetPaletteColor(warm-5);
     box-shadow: 1px 1px 1px 1px rgba(oColorsGetPaletteColor('grey-tint1'), 0.5);
@@ -87,3 +91,18 @@ $highlight: rgb(80,212,196);
     }
 }
 
+.speech__highlight--pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    background-color: rgba(oColorsGetPaletteColor('grey-tint5'), 0.15);
+  }
+  50% {
+    background-color: rgba($highlight,0.5);;
+  }
+  100% {
+    background-color: rgba(oColorsGetPaletteColor('grey-tint5'), 0.15);
+  }
+}
