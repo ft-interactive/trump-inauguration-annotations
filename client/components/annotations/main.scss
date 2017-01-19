@@ -21,17 +21,20 @@ $highlight: rgb(80,212,196);
 }
 
 .speech:before {
-    content: '';
     @include oIconsGetIcon('speech-left', oColorsGetPaletteColor('grey-tint3'), 48);
-    display: block;
-    margin: 0 auto;
 }
 
 .speech:after {
-    content: '';
     @include oIconsGetIcon('speech-right', oColorsGetPaletteColor('grey-tint3'), 48);
+}
+
+.speech:before,
+.speech:after {
+    content: '';
     display: block;
-    margin: 0 auto;
+    @include oGridRespondTo(M) {
+        margin: 0 auto;
+    }
 }
 
 .speech__annotation {
@@ -46,14 +49,16 @@ $highlight: rgb(80,212,196);
         font-size: 18px;
         color: #333333;
     }
-    p:first-child {
-        margin-top: 0;
+    :first-child {
+        margin-top: -5px;
     }
     .speech__annotation-byline {
+        display: block;
         @include oTypographySansData(l, $load-progressively: true);
         color: #6A6A6A;
         font-size: 16px;
         border: 0;
+        margin-bottom: -5px;
 
         &:hover {
             opacity: 0.8;
