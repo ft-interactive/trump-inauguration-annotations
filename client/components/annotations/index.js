@@ -42,12 +42,18 @@ class Annotation {
   bindListeners() {
 		const eventHandler = (event) => {
 				if (event.type === 'click' || (event.type === 'click' && event.keyCode === 13)) {
-          this.openAnnotation(event.target);
-          if (this.selectedHighlight) {
+          if (this.selectedHighlight && this.selectedHighlight === event.target) {
+            this.selectedHighlight = null;
+            this.annotationModal.innerHTML = '';
             this.selectedHighlight.setAttribute('aria-expanded', 'false');
+          } else {
+            this.openAnnotation(event.target);
+            if (this.selectedHighlight) {
+              this.selectedHighlight.setAttribute('aria-expanded', 'false');
+            }
+            this.selectedHighlight = event.target;
+            this.selectedHighlight.setAttribute('aria-expanded', 'true');
           }
-          this.selectedHighlight = event.target;
-          this.selectedHighlight.setAttribute('aria-expanded', 'true');
         }
     };
 
@@ -103,11 +109,12 @@ class Annotation {
   highlightMarkup(node, matcher, annotationIndex) {
 		const highlight = document.createElement('mark');
     highlight.innerHTML = matcher;
-		highlight.tabIndex = 1;
+		highlight.tabIndex = 0;
     highlight.classList.add('speech__highlight');
     highlight.setAttribute(this.highlightAttribute, annotationIndex);
     highlight.setAttribute('aria-expanded', 'false');
     highlight.setAttribute('aria-controls', 'annotation');
+    highlight.setAttribute('role', 'button');
 
     node.innerHTML = node.innerHTML.replace(matcher, highlight.outerHTML);
 	}

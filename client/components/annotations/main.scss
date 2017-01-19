@@ -50,7 +50,7 @@ $highlight: rgb(80,212,196);
     }
     .speech__annotation-byline {
         @include oTypographySansData(l, $load-progressively: true);
-        color: #66605a;
+        color: #6A6A6A;
         font-size: 16px;
         border: 0;
 
@@ -68,6 +68,7 @@ $highlight: rgb(80,212,196);
 }
 
 .speech__highlight {
+    outline: none;
     background-color: rgba(oColorsGetPaletteColor('grey-tint5'), 0.15);
     padding: 3px 0;
     transition: background-color 0.3s ease;
