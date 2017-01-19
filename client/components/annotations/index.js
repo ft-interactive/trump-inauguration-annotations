@@ -3,8 +3,8 @@ import MarkdownIt from 'markdown-it';
 
 class Annotation {
 	constructor(rootElement, options) {
-		this.options = options;
     this.rootElement = rootElement;
+		this.options = this.defaultOptions(options);
 		this.highlightAttribute = 'data-highlight';
 		this.highlightElements;
 		this.annotations;
@@ -15,10 +15,6 @@ class Annotation {
 	}
 
   static init(rootElement, options = {}) {
-    options.minWidth = 200;
-    options.maxWidth = 400;
-    options.gutter = 40;
-
     if (!rootElement) {
       rootElement = document.querySelectorAll('[data-annotation-text]');
     } else if (!(rootElement instanceof HTMLElement)) {
@@ -29,9 +25,17 @@ class Annotation {
       new Annotation(rootElement, options);
     } else {
       [].forEach.call(rootElement, (element) => {
-        options.annotationsId = element.getAttribute('data-annotation-id');
         new Annotation(element, options)
       });
+    }
+  }
+
+  defaultOptions(options) {
+    return {
+      annotationsId: options.annotationsId || this.rootElement.getAttribute('data-annotation-id'),
+      minWidth: options.minWidth || null,
+      maxWidth: options.maxWidth || null,
+      gutter: options.gutter || null
     }
   }
 
@@ -159,14 +163,15 @@ class Annotation {
   }
 
   calculateAnnotationWidth() {
-    const spaceForAnnotation = (document.documentElement.clientWidth - (this.options.gutter * 2)) - (this.rootElement.getBoundingClientRect().left + this.rootElement.clientWidth);
+    const spaceForAnnotation = (document.documentElement.clientWidth - (this.options.gutter + this.options.gutter / 2)) - (this.rootElement.getBoundingClientRect().left + this.rootElement.clientWidth);
 
 
-    let width = spaceForAnnotation > this.options.minWidth ? spaceForAnnotation : null;
+    let width = spaceForAnnotation > this.options.minWidth ? spaceForAnnotation : 0;
 
-    width = width > this.options.maxWidth ? this.options.maxWidth : width;
+    width = this.options.maxWidth && width > this.options.maxWidth ? this.options.maxWidth : width;
 
     return width;
+
   }
   calculateAnnotationYPosition(highlight, annotation) {
 

@@ -1,0 +1,40 @@
+@import 'o-icons/main';
+@import 'o-colors/main';
+
+.speech {
+    background: oColorsGetPaletteColor(warm-5);
+    box-shadow: 1px 1px 1px 1px rgba(oColorsGetPaletteColor('grey-tint1'), 0.5);
+    padding: 20px 40px;
+    margin-bottom: 20px;
+}
+
+.speech:before {
+    content: '';
+    @include oIconsGetIcon('speech-left', oColorsGetPaletteColor('grey-tint3'), 48);
+    display: block;
+    margin: 0 auto;
+}
+
+.speech:after {
+    content: '';
+    @include oIconsGetIcon('speech-right', oColorsGetPaletteColor('grey-tint3'), 48);
+    display: block;
+    margin: 0 auto;
+}
+.speech--annotation {
+    visibility: hidden;
+    border-left: 3px solid rgba(oColorsGetPaletteColor('teal-2'), 0.6);
+    padding-left: 10px;
+    margin: 10px 0;
+}
+
+.speech--highlight {
+    background-color: rgba(oColorsGetPaletteColor('teal-2'), 0.3);
+    transition: background-color 0.3s ease;
+    &:hover,
+    &[aria-expanded="true"] {
+        background-color: rgba(oColorsGetPaletteColor('teal-2'), 0.6);
+        cursor: pointer;
+    }
+}
+
