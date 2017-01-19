@@ -43,9 +43,17 @@ class Annotation {
 		const eventHandler = (event) => {
 				if (event.type === 'click' || (event.type === 'click' && event.keyCode === 13)) {
           if (this.selectedHighlight && this.selectedHighlight === event.target) {
-            this.selectedHighlight = null;
             this.annotationModal.innerHTML = '';
             this.selectedHighlight.setAttribute('aria-expanded', 'false');
+            this.selectedHighlight = null;
+            if (typeof(ga) !== 'undefined') {
+              ga('send', {
+                hitType: 'event',
+                eventCategory: 'Annotation Highlight',
+                eventAction: 'Close',
+                eventLabel: 'Trump Speech'
+              });
+            }
           } else {
             this.openAnnotation(event.target);
             if (this.selectedHighlight) {
@@ -53,6 +61,14 @@ class Annotation {
             }
             this.selectedHighlight = event.target;
             this.selectedHighlight.setAttribute('aria-expanded', 'true');
+            if (typeof(ga) !== 'undefined') {
+              ga('send', {
+                hitType: 'event',
+                eventCategory: 'Annotation Highlight',
+                eventAction: 'Open',
+                eventLabel: 'Trump Speech'
+              });
+            }
           }
         }
     };
