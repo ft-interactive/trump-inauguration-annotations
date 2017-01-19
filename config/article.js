@@ -38,9 +38,9 @@ export default () => ({ // eslint-disable-line
   // if array of authors, url is optional
   byline: [
     { name: 'Glynn Phillips', url: 'https://twitter.com/glynnphillips' },
-    { name: 'Ændrew Rininsland', url: 'https://www.ft.com/topics/authors/%C3%86ndrew_Rininsland' },
     { name: 'Caroline Nevitt', url: 'https://www.ft.com/topics/authors/Caroline_Nevitt' },
-    { name: 'Martin Stabe', url: 'https://www.ft.com/martin-stabe' },
+    { name: 'Shawn Donnan', url: 'https://www.ft.com/stream/authorsId/Q0ItMDAwMTI0NQ==-QXV0aG9ycw==' },
+    { name: 'Sam Fleming', url: 'https://www.ft.com/stream/authorsId/Q0ItMDQxMTMzNw==-QXV0aG9ycw==' },
   ],
 
   // Appears in the HTML <title>
