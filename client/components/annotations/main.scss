@@ -34,7 +34,7 @@ $highlight: rgb(80,212,196);
     visibility: hidden;
     border-left: 3px solid $highlight;
     padding-left: 10px;
-    margin: 10px 0;
+    margin: 30px 10px;
 
     p {
         @include oTypographySansData(l, $load-progressively: true);
