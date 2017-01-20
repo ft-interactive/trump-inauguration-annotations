@@ -24,6 +24,37 @@ $highlight: rgb(80,212,196);
     }
 }
 
+.speech__quote--top {
+  @include oIconsGetIcon('speech-left', oColorsGetPaletteColor('grey-tint2'), 48);
+}
+
+.speech__quote--bottom {
+    @include oIconsGetIcon('speech-right', oColorsGetPaletteColor('grey-tint2'), 48);
+}
+
+.speech__quote {
+  position: relative;
+  display: block;
+  margin: 0 auto;
+}
+
+.speech__quote:before,
+.speech__quote:after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 48px;
+  top: 24px;
+  border-top: 1px solid oColorsGetPaletteColor('grey-tint2');
+}
+
+.speech__quote:before {
+  left: -60px;
+}
+.speech__quote:after {
+  right: -60px;
+}
+
 .speech__annotation {
     box-sizing: border-box;
     visibility: hidden;
