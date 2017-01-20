@@ -44,7 +44,7 @@ export default () => ({ // eslint-disable-line
   ],
 
   // Appears in the HTML <title>
-  title: 'Donald Trump inauguration speech, annotated by the Financial Times',
+  title: 'Donald Trump inauguration speech annotated transcript',
 
   // meta data
   description: 'Donald Trump inauguration speech, annotated by the FT',
