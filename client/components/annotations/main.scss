@@ -8,7 +8,6 @@ $highlight: rgb(80,212,196);
 
 .o-typography-body-wrapper .annotation-instructions {
     @include oTypographySansData(l, $load-progressively: true);
-    text-align: center;
 }
 
 .speech {
@@ -47,14 +46,13 @@ $highlight: rgb(80,212,196);
         font-size: 16px;
         border: 0;
         margin-bottom: -5px;
+        padding-top: 5px;
 
         &:hover {
             opacity: 0.8;
         }
     }
 }
-
-
 
 .speech__annotation--absolute {
     position: absolute;
@@ -84,7 +82,7 @@ $highlight: rgb(80,212,196);
     background-color: rgba(oColorsGetPaletteColor('grey-tint5'), 0.15);
   }
   50% {
-    background-color: rgba($highlight,0.5);;
+    background-color: $highlight;
   }
   100% {
     background-color: rgba(oColorsGetPaletteColor('grey-tint5'), 0.15);
