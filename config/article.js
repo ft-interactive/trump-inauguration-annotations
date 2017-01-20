@@ -40,7 +40,7 @@ export default () => ({ // eslint-disable-line
     { name: 'Glynn Phillips', url: 'https://twitter.com/glynnphillips' },
     { name: 'Caroline Nevitt', url: 'https://www.ft.com/topics/authors/Caroline_Nevitt' },
     { name: 'Shawn Donnan', url: 'https://www.ft.com/stream/authorsId/Q0ItMDAwMTI0NQ==-QXV0aG9ycw==' },
-    { name: 'Sam Fleming', url: 'https://www.ft.com/stream/authorsId/Q0ItMDQxMTMzNw==-QXV0aG9ycw==' },
+    { name: 'Barney Jopson', url: 'https://www.ft.com/stream/authorsId/Q0ItMDAwMDc5MA==-QXV0aG9ycw==' },
   ],
 
   // Appears in the HTML <title>
