@@ -102,7 +102,7 @@ class Annotation {
   }
 
   getAnnotations() {
-    fetch(`http://bertha.ig.ft.com/view/publish/gss/${this.options.annotationsId}/authors,annotations`)
+    fetch(`https://bertha.ig.ft.com/view/publish/gss/${this.options.annotationsId}/authors,annotations`)
   	.then(response => {
       if (!response.ok) {
         throw Error(response.statusText);
