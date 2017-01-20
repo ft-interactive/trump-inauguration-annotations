@@ -1,5 +1,21 @@
 import MarkdownIt from 'markdown-it';
 
+function debounce(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};
+
+
 class Annotation {
   constructor(rootElement, options) {
     this.rootElement = rootElement;
@@ -86,19 +102,20 @@ class Annotation {
       });
     });
 
-    window.onresize = (event) => {
+    window.addEventListener('resize', debounce(() => {
       const width = this.calculateAnnotationWidth();
 
-      if (width) {
+      if (width && this.selectedHighlight) {
+        const annotationPosition = this.calculateAnnotationYPosition(this.selectedHighlight, this.annotationModal);
         this.annotationModal.classList.add('speech__annotation--absolute');
         this.annotationModal.style.width = `${this.calculateAnnotationWidth()}px`;
-        this.annotationModal.style.top = `${this.calculateAnnotationYPosition(this.selectedHighlight, this.annotationModal).top}px`;
-        this.annotationModal.style.left = `${this.calculateAnnotationYPosition(this.selectedHighlight, this.annotationModal).left}px`;
+        this.annotationModal.style.top = `${annotationPosition.top}px`;
+        this.annotationModal.style.left = `${annotationPosition.left}px`;
       } else {
         this.annotationModal.classList.remove('speech__annotation--absolute');
         this.annotationModal.style.width = '100%';
       }
-    };
+		}, 250));
   }
 
   getAnnotations() {
