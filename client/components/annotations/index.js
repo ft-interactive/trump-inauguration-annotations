@@ -136,7 +136,7 @@ class Annotation {
 
   addHighlighting() {
   	this.annotations.forEach((annotation, index) => {
-    if (this.elementContainingAnnotationMatcher(annotation.match)) {
+    if (this.elementContainingAnnotationMatcher(annotation.match) && annotation.annotation.md) {
       this.highlightMarkup(this.elementContainingAnnotationMatcher(annotation.match), annotation.match, index);
     }
   	});
@@ -199,7 +199,14 @@ class Annotation {
 
   generateAnnotationMarkup(data) {
     const md = new MarkdownIt();
-    return `${md.render(data.annotation.md)}<a href="${data.authorlink}" rel="author" class="speech__annotation-byline">${data.author}</a>`;
+    console.log(data)
+    let authorLink = data.author && data.authorlink ? `<a href="${data.authorlink}" rel="author" class="speech__annotation-byline">${data.author}</a>` : '';
+
+    if (authorLink === '' && data.author) {
+      authorLink = `<span class="speech__annotation-byline">${data.author}</span>`
+    }
+
+    return `${md.render(data.annotation.md)} ${authorLink}`;
   }
 
   calculateAnnotationWidth() {
