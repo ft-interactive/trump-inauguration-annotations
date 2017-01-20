@@ -196,15 +196,17 @@ class Annotation {
     return width;
   }
   calculateAnnotationYPosition(highlight, annotation) {
-    const topOfHighlight = highlight.offsetTop;
-    const heightOfAnnotation = annotation.clientHeight;
-    const bottomOfSpeech = this.rootElement.clientHeight + this.rootElement.offsetTop;
-    const leftPosition = this.rootElement.clientWidth + this.options.gutter;
+    if (highlight) {
+      const topOfHighlight = highlight.offsetTop;
+      const heightOfAnnotation = annotation.clientHeight;
+      const bottomOfSpeech = this.rootElement.clientHeight + this.rootElement.offsetTop;
+      const leftPosition = this.rootElement.clientWidth + this.options.gutter;
 
-    return {
-      top: topOfHighlight + heightOfAnnotation < bottomOfSpeech ? topOfHighlight : topOfHighlight - ((topOfHighlight + heightOfAnnotation) - bottomOfSpeech),
-      left: leftPosition,
-    };
+      return {
+        top: topOfHighlight + heightOfAnnotation < bottomOfSpeech ? topOfHighlight : topOfHighlight - ((topOfHighlight + heightOfAnnotation) - bottomOfSpeech),
+        left: leftPosition,
+      };
+    }
   }
 }
 
