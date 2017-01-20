@@ -1,4 +1,3 @@
-import axios from 'axios';
 import MarkdownIt from 'markdown-it';
 
 class Annotation {
@@ -103,14 +102,19 @@ class Annotation {
   }
 
   getAnnotations() {
-    axios.get(`http://bertha.ig.ft.com/view/publish/gss/${this.options.annotationsId}/authors,annotations`)
-  		.then(data => {
-    this.annotations = data.data.annotations;
-    this.addHighlighting();
-    this.bindListeners();
-  		}).catch(error => {
+    fetch(`http://bertha.ig.ft.com/view/publish/gss/${this.options.annotationsId}/authors,annotations`)
+  	.then(response => {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      return response.json();
+    }).then(data => {
+      this.annotations = data.annotations;
+      this.addHighlighting();
+      this.bindListeners();
+  	}).catch(error => {
     		console.error(error);
-  		});
+  	});
   }
 
   addHighlighting() {
