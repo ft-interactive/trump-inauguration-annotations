@@ -3,16 +3,19 @@ import getFlags from './flags';
 import getOnwardJourney from './onward-journey';
 import axios from 'axios';
 
+function annotateSpeech(annotations) {
+  let manipulatedHtml = speechBody.html;
+  annotations.forEach((annotation) => {
+    manipulatedHtml = manipulatedHtml.replace(annotation.match, `<mark class="annotation-highlight">${annotation.match}</mark>`)
+  });
+
+  return manipulatedHtml;
+}
+
 export default async function() {
   const d = await article();
   const flags = await getFlags();
   const onwardJourney = await getOnwardJourney();
-  try {
-    d.annotations = (await axios(`http://bertha.ig.ft.com/view/publish/gss/17v6FLbDsDwxC7XGsqesLJiwq6CEd4FH3T8Erqawo9R4/authors,annotations`)).data.annotations;
-    console.dir(d.annotations)
-  } catch (e) {
-    console.error(e);
-  }
 
   return {
     ...d,

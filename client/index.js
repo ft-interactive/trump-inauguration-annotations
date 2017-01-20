@@ -1,19 +1,7 @@
-/*
-  TODO: delete this comment
+import annotations from './components/annotations';
 
-  This file is where you bootstrap your JS code
-  For example import stuff here:
-
-  import {select} from 'd3-selection';
-  import myComponent from './components/my-component';
-
-  Split logical parts of you project into components e.g.
-
-  /client
-    - /components
-        - /component-name
-            - styles.scss
-            - index.js
-            - template.html
-
-*/
+annotations.init('[data-annotation-text]', {
+  minWidth: 200,
+  maxWidth: 400,
+  gutter: 40
+});
