@@ -1,6 +1,6 @@
 # [trump-inauguration-annotations](https://ig.ft.com/sites/trump-inauguration-annotations)
 
-> Trump's innauguration speech, annotated
+Donald Trump's innauguration speech, [annotated](https://ig.ft.com/sites/trump-inauguration-annotations), January 20, 2017.
 
 [![Build Status][circle-image]][circle-url] [![Dependency Status][devdeps-image]][devdeps-url]
 
