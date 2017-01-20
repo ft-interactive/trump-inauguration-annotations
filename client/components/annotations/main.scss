@@ -66,6 +66,13 @@ $highlight: rgb(80,212,196);
         @include oTypographySansData(l, $load-progressively: true);
         font-size: 18px;
         color: #333333;
+
+        img {
+          margin-top: 10px;
+          display: block;
+          width: 100%;
+          max-width: 300px;
+        }
     }
     :first-child {
         margin-top: -5px;
