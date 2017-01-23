@@ -44,7 +44,7 @@ export default () => ({ // eslint-disable-line
     { name: 'David J Lynch', url: 'https://www.ft.com/stream/authorsId/ZmZjOWNjZDQtZmE2MC00MTA4LWI5NWMtNjUwNjI5OTM0ZTQw-QXV0aG9ycw==' },
     { name: 'Joanna S Kao', url: 'https://www.ft.com/joanna-kao' },
     { name: 'Martin Stabe', url: 'https://www.ft.com/martin-stabe' },
-
+    { name: 'Lauren Leatherby', url: 'https://www.ft.com/lauren-leatherby' },
   ],
 
   // Appears in the HTML <title>
